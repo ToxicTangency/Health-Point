@@ -17,7 +17,7 @@
     <div class="slider__wrapper flex flex-wrap gap-8 justify-center px-3">
       <template v-for="slide in slides" :key="slide.id">
         <div class="slide" v-show="activeSlides.includes(slide.id)">
-          <img :src="slide.img" alt="" />
+          <img :src="urlFor(slide.image)" alt="" v-if="slides.length > 2" />
         </div>
       </template>
     </div>
@@ -39,28 +39,18 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import getSlides from "../../api/slides";
 import IconArrow from "./icons/IconArrow.vue";
+import client from "../../lib/client";
 
-const slides = [
-  {
-    id: 1,
-    img: "/src/assets/slide1.png",
-  },
-  {
-    id: 2,
-    img: "/src/assets/slide2.png",
-  },
-  {
-    id: 3,
-    img: "/src/assets/slide3.png",
-  },
-  {
-    id: 4,
-    img: "/src/assets/slide4.png",
-  },
-];
+const urlFor = client.urlFor;
+const slides = ref([{}]);
 const activeSlides = ref([1, 2]);
+
+onMounted(async () => {
+  slides.value = await getSlides();
+});
 
 const nextSlide = () => {
   if (isHaveNext.value) {
@@ -77,7 +67,7 @@ const prevSlide = () => {
 const isHaveNext = computed(
   () =>
     activeSlides.value.reduce((a, b) => a + b) <
-    slides
+    slides.value
       .map((i) => i.id)
       .slice(-2)
       .reduce((a, b) => a + b)
@@ -85,7 +75,7 @@ const isHaveNext = computed(
 const isHavePrev = computed(
   () =>
     activeSlides.value.reduce((a, b) => a + b) >
-    slides
+    slides.value
       .map((i) => i.id)
       .slice(0, 2)
       .reduce((a, b) => a + b)
