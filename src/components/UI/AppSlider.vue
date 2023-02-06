@@ -45,19 +45,19 @@ import IconArrow from "./icons/IconArrow.vue";
 const slides = [
   {
     id: 1,
-    img: "src/assets/slide1.png",
+    img: "/src/assets/slide1.png",
   },
   {
     id: 2,
-    img: "src/assets/slide2.png",
+    img: "/src/assets/slide2.png",
   },
   {
     id: 3,
-    img: "src/assets/slide3.png",
+    img: "/src/assets/slide3.png",
   },
   {
     id: 4,
-    img: "src/assets/slide4.png",
+    img: "/src/assets/slide4.png",
   },
 ];
 const activeSlides = ref([1, 2]);
